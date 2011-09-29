@@ -9,7 +9,7 @@
 //-------------------------------------------------------------
 
 //node.js interoperability
-if(typeof(exports) == "undefined") {
+if(typeof(exports) === "undefined") {
   var patcher = {};
 }
 
@@ -166,10 +166,14 @@ function applyPatch(obj, patch) {
     
     if(typeof(obj[t]) == typeof(patch[i]) &&
       typeof(patch[i]) == "object" &&
-      patch[i] != null &&
-      (obj[t] instanceof Array) == (patch[i] instanceof Array)) {
-      applyPatch(obj[t], patch[i]);
-      continue;
+      patch[i] != null ) {
+      if( (obj[t] instanceof Array) == (patch[i] instanceof Array) ) {
+        applyPatch(obj[t], patch[i]);
+        continue;
+      } else if( (obj[t] instanceof Array) && false == (patch[i] instanceof Array) ) {
+        applyPatch(obj[t], patch[i]);
+        continue;
+      };
     }
     obj[t] = patch[i]
   }
@@ -177,7 +181,7 @@ function applyPatch(obj, patch) {
 
 
 //Add methods to patcher
-if(typeof(exports) == "unedefined") {
+if(typeof(exports) === "undefined") {
   patcher.computePatch = computePatch;
   patcher.applyPatch   = applyPatch;
 } else {
