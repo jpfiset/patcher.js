@@ -63,6 +63,9 @@ function computePatch(prev, next, update_in_place) {
   
     //Add _ to escape ids which start with _
     var target_id = (typeof(id) == "string" && id.charAt(0) == "_" ? "_" + id : id);
+    if( typeof(target_id) === 'number' ){
+    	target_id = '_'+target_id;
+    };
     
     //First, check if the element exists and types match
     if(id in prev && typeof(prev[id]) == typeof(next[id])) {
@@ -162,7 +165,23 @@ function applyPatch(obj, patch) {
   
   for(i in patch) {
     //Unescape underscore
-    var t = (typeof(i) == "string" && i.charAt(0) == "_" ? i.substring(1) : i);
+    //var t = (typeof(i) == "string" && i.charAt(0) == "_" ? i.substring(1) : i);
+	if( typeof(i) === 'string' 
+     && i.length > 1 
+     && i.charAt(0) == '_' 
+     && i.charAt(1) == '_'  ) {
+      // string staring with _ which is escaped
+      var t = i.substring(1);
+      
+    } else if( typeof(i) === 'string' 
+        && i.length > 0
+        && i.charAt(0) == '_'  ) {
+      // escaped index
+      t = 1 * i.substring(1);
+      
+    } else {
+      t = i;
+    };
     
     if(typeof(obj[t]) == typeof(patch[i]) &&
       typeof(patch[i]) == "object" &&

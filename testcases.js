@@ -118,23 +118,31 @@ function main(){
 
 	patchTest('replace.4',{a:1},{a:['a','b']},{a:['a','b']});
 	
-	patchTest('array.0',{a:[0,1]},{a:[0,1,2]},{a:{2:2,_r:3}});
+	patchTest('array.0',{a:[0,1]},{a:[0,1,2]},{a:{_2:2,_r:3}});
 	
 	patchTest('array.1',{a:[0,1,2]},{a:[0,1]},{a:{_r:2}});
 	
-	patchTest('array.2',{a:[0,1,2]},{a:[0,2]},{a:{_r:2,1:2}});
+	patchTest('array.2',{a:[0,1,2]},{a:[0,2]},{a:{_r:2,_1:2}});
 
 	patchTest('array.3',{a:[0,'1',{b:2,c:3}]},{a:[0,'1',{b:2,c:3}]},null);
 
-	patchTest('array.4',{a:[0,'1',{b:2,c:3}]},{a:['a','1',{b:2,c:3}]},{a:{0:'a'}});
+	patchTest('array.4',{a:[0,'1',{b:2,c:3}]},{a:['a','1',{b:2,c:3}]},{a:{_0:'a'}});
 
-	patchTest('array.5',{a:[0,'1',{b:2,c:3}]},{a:[0,{d:4},{b:2,c:3}]},{a:{1:{d:4}}});
+	patchTest('array.5',{a:[0,'1',{b:2,c:3}]},{a:[0,{d:4},{b:2,c:3}]},{a:{_1:{d:4}}});
 
-	patchTest('array.6',{a:[0,'1',{b:2,c:3}]},{a:[0,'1','4']},{a:{2:'4'}});
+	patchTest('array.6',{a:[0,'1',{b:2,c:3}]},{a:[0,'1','4']},{a:{_2:'4'}});
 
-	patchTest('array.7',{a:[0,'1',{b:2,c:3}]},{a:[0,'1',{b:4,c:3}]},{a:{2:{b:4}}});
+	patchTest('array.7',{a:[0,'1',{b:2,c:3}]},{a:[0,'1',{b:4,c:3}]},{a:{_2:{b:4}}});
 
-	patchTest('array.8',{a:[0,'1',{b:2,c:3}]},{a:[{b:2,c:3}, 0,'1']},{a:{0:{b:2,c:3}, 1:0, 2:'1'}});
+	patchTest('array.8',{a:[0,'1',{b:2,c:3}]},{a:[{b:2,c:3}, 0,'1']},{a:{_0:{b:2,c:3}, _1:0, _2:'1'}});
+
+	patchTest('escape.0',{_a:1},{_a:2},{__a:2});
+
+	patchTest('escape.1',{__a:1},{__a:2},{___a:2});
+
+	patchTest('escape.2',{_a:1},{},{_r:'_a'});
+
+	patchTest('escape.3',{_a:1,_b:2},{},{_r:['_a','_b']});
 	
 	printLog('Completed: '+testCount+' Failures: '+testFailed)
 };
